@@ -123,7 +123,8 @@ function getGhostElement(wrapperElement: HTMLElement, { x, y }: Position, contai
 
   return {
     ghost: ghost,
-    centerDelta: { x: midX - x, y: midY - y },
+    // PATCH: if a drag handle selector is used, set x to 0 (close enough to mouse cursor position)
+    centerDelta: { x: (container.getOptions().dragHandleSelector ? 0 : midX - x), y: midY - y },
     positionDelta: { left: left - x, top: top - y },
     topLeft: {
       x: left,
@@ -477,7 +478,7 @@ function onMouseUp() {
     handleMissedDragFrame();
     dropAnimationStarted = true;
     handleDropAnimation(() => {
-      isDragging = false; // 
+      isDragging = false; //
       fireOnDragStartEnd(false);
       const containers = dragListeningContainers || [];
 
